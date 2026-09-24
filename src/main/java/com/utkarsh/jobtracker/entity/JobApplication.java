@@ -21,8 +21,11 @@ private User user ;
     private String company;
     private  String roleTitle;
 
-    @Enumerated(EnumType.company)
+    @Enumerated(EnumType.STRING)
     private ApplicationStatus status ;  // APPLIED, INTERVIEW, OFFER, REJECTED
  private LocalDate appliedDate;
  private LocalDate followUpDate;
+  public enum ApplicationStatus {
+      APPROVED, INTERVIEW, OFFER, REJECTED
+  }
 }

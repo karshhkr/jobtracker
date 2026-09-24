@@ -26,4 +26,8 @@ public class User {
  private Role role=Role.USER;
 
  private Instant creationAt = Instant.now();
+
+ private enum Role{
+     USER, ADMIN
+ }
 }
