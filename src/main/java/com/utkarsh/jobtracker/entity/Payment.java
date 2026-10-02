@@ -1,4 +1,34 @@
 package com.utkarsh.jobtracker.entity;
 
+import jakarta.persistence.*;
+import lombok.Data;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+
+@Entity
+@Table(name = "payments")
+@Data
 public class Payment {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subscription_id", nullable = false)
+    private Subscription subscription;
+
+    private BigDecimal amount;
+
+    private String razorpayPaymentId;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus status;
+
+    private Instant paidAt = Instant.now();
+
+    public enum PaymentStatus {
+        CREATED, SUCCESS, FAILED
+    }
 }
