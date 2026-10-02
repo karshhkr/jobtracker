@@ -1,4 +1,7 @@
 package com.utkarsh.jobtracker.repository;
 
-public class PaymentRepository {
+import com.utkarsh.jobtracker.entity.Payment;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PaymentRepository extends JpaRepository<Payment, String> {
 }
