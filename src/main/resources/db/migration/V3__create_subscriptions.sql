@@ -1,0 +1,10 @@
+CREATE TABLE subscriptions (
+    id VARCHAR(36) PRIMARY KEY,
+    user_id VARCHAR(36) NOT NULL UNIQUE,
+    plan VARCHAR(20) NOT NULL DEFAULT 'FREE',
+    razorpay_sub_id VARCHAR(255),
+    status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
+    start_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    end_date TIMESTAMP,
+    CONSTRAINT fk_sub_user FOREIGN KEY (user_id) REFERENCES users(id)
+);
