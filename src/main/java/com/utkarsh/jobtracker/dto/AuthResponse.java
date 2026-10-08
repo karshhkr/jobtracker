@@ -1,6 +1,4 @@
 package com.utkarsh.jobtracker.dto;
 
-public class AuthResponse {
-    public AuthResponse(String token) {
-    }
+public record AuthResponse(String token, String name, String email) {
 }

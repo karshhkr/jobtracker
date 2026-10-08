@@ -1,0 +1,593 @@
+```css
+/* =========================================================
+   1. ROOT VARIABLES / THEME
+   ========================================================= */
+
+:root {
+    --bg: #f6f7fb;
+    --card: #fff;
+    --text: #1b1f2a;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+
+    --primary: #4f46e5;
+    --primary-d: #4338ca;
+    --bad: #dc2626;
+
+    --radius: 12px;
+}
+
+
+/* =========================================================
+   2. DARK MODE
+   ========================================================= */
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #0f1117;
+        --card: #181b24;
+        --text: #e8eaf0;
+        --muted: #9aa3b2;
+        --border: #2a2f3c;
+    }
+}
+
+
+/* =========================================================
+   3. GLOBAL / RESET
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   4. CONTAINER
+   ========================================================= */
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 16px;
+}
+
+
+/* =========================================================
+   5. NAVIGATION
+   ========================================================= */
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 14px 24px;
+
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+
+    position: sticky;
+    top: 0;
+    z-index: 5;
+}
+
+.nav .brand {
+    font-weight: 800;
+    font-size: 1.15rem;
+    color: var(--text);
+}
+
+.nav a.link {
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.nav a.link.active {
+    color: var(--primary);
+}
+
+.nav .spacer {
+    flex: 1;
+}
+
+.nav .user {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   6. CARDS
+   ========================================================= */
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+}
+
+
+/* =========================================================
+   7. BUTTONS
+   ========================================================= */
+
+.btn {
+    display: inline-block;
+
+    border: 0;
+    border-radius: 8px;
+
+    padding: 9px 16px;
+
+    font-weight: 600;
+    font-size: 0.95rem;
+
+    cursor: pointer;
+
+    background: var(--primary);
+    color: #fff;
+}
+
+.btn:hover {
+    background: var(--primary-d);
+}
+
+
+/* Ghost Button */
+
+.btn.ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+
+/* Danger Button */
+
+.btn.danger {
+    background: transparent;
+    color: var(--bad);
+    border: 1px solid var(--border);
+}
+
+
+/* Small Button */
+
+.btn.sm {
+    padding: 5px 10px;
+    font-size: 0.82rem;
+}
+
+
+/* Disabled Button */
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   8. FORM ELEMENTS
+   ========================================================= */
+
+input,
+select,
+textarea {
+    width: 100%;
+
+    padding: 9px 12px;
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    background: var(--card);
+    color: var(--text);
+
+    font: inherit;
+}
+
+label {
+    display: block;
+
+    font-size: 0.85rem;
+    font-weight: 600;
+
+    margin: 12px 0 4px;
+}
+
+
+/* =========================================================
+   9. AUTHENTICATION
+   ========================================================= */
+
+.auth {
+    max-width: 400px;
+    margin: 8vh auto;
+    padding: 0 16px;
+}
+
+.auth h1 {
+    margin: 0 0 4px;
+}
+
+.auth p.sub {
+    color: var(--muted);
+    margin-top: 0;
+}
+
+
+/* =========================================================
+   10. ERROR MESSAGE
+   ========================================================= */
+
+.error {
+    background: #fef2f2;
+    color: var(--bad);
+
+    border: 1px solid #fecaca;
+    padding: 8px 12px;
+    border-radius: 8px;
+
+    margin: 12px 0;
+
+    display: none;
+}
+
+
+/* =========================================================
+   11. STATISTICS
+   ========================================================= */
+
+.stats {
+    display: grid;
+
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(130px, 1fr)
+    );
+
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.stat {
+    text-align: center;
+    padding: 14px;
+}
+
+.stat b {
+    display: block;
+    font-size: 1.7rem;
+}
+
+.stat span {
+    color: var(--muted);
+
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+
+/* =========================================================
+   12. TWO-COLUMN GRID
+   ========================================================= */
+
+.grid2 {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+
+/* =========================================================
+   13. PROGRESS BAR
+   ========================================================= */
+
+.bar {
+    height: 8px;
+
+    background: var(--border);
+
+    border-radius: 99px;
+
+    overflow: hidden;
+
+    margin: 8px 0;
+}
+
+.bar i {
+    display: block;
+
+    height: 100%;
+
+    background: var(--primary);
+}
+
+
+/* =========================================================
+   14. TOOLBAR
+   ========================================================= */
+
+.toolbar {
+    display: flex;
+
+    gap: 10px;
+    margin: 16px 0;
+
+    flex-wrap: wrap;
+}
+
+.toolbar input {
+    flex: 1;
+    min-width: 160px;
+}
+
+.toolbar select {
+    width: auto;
+}
+
+
+/* =========================================================
+   15. TABLE
+   ========================================================= */
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    text-align: left;
+
+    padding: 10px 12px;
+
+    border-bottom: 1px solid var(--border);
+
+    font-size: 0.92rem;
+
+    vertical-align: middle;
+}
+
+th {
+    color: var(--muted);
+
+    font-size: 0.78rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.04em;
+}
+
+
+/* =========================================================
+   16. BADGES
+   ========================================================= */
+
+.badge {
+    padding: 3px 9px;
+
+    border-radius: 99px;
+
+    font-size: 0.75rem;
+    font-weight: 700;
+
+    background: var(--border);
+}
+
+
+/* Application Status */
+
+.badge.APPLIED {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.badge.INTERVIEW {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.badge.OFFER {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.badge.REJECTED {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.badge.WISHLIST {
+    background: #ede9fe;
+    color: #6d28d9;
+}
+
+
+/* =========================================================
+   17. REMINDERS
+   ========================================================= */
+
+.reminder {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 8px 0;
+
+    border-bottom: 1px solid var(--border);
+
+    font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   18. UTILITY CLASSES
+   ========================================================= */
+
+.muted {
+    color: var(--muted);
+}
+
+.empty {
+    padding: 28px;
+
+    text-align: center;
+
+    color: var(--muted);
+}
+
+
+/* =========================================================
+   19. DIALOG / MODAL
+   ========================================================= */
+
+dialog {
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    background: var(--card);
+    color: var(--text);
+
+    padding: 22px;
+
+    width: min(560px, 94vw);
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+
+/* Form Row */
+
+.row {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+}
+
+
+/* Modal Actions */
+
+.actions {
+    display: flex;
+
+    gap: 8px;
+
+    justify-content: flex-end;
+
+    margin-top: 18px;
+}
+
+
+/* =========================================================
+   20. PRICING PLANS
+   ========================================================= */
+
+.plans {
+    display: grid;
+
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(260px, 1fr)
+    );
+
+    gap: 16px;
+
+    max-width: 720px;
+
+    margin: 24px auto;
+}
+
+.plan h2 {
+    margin: 0;
+}
+
+.plan .price {
+    font-size: 2rem;
+    font-weight: 800;
+
+    margin: 8px 0;
+}
+
+.plan ul {
+    padding-left: 18px;
+    color: var(--muted);
+}
+
+.plan.featured {
+    border: 2px solid var(--primary);
+}
+
+
+/* =========================================================
+   21. TOAST / NOTIFICATION
+   ========================================================= */
+
+#toast {
+    position: fixed;
+
+    bottom: 20px;
+    right: 20px;
+
+    background: var(--text);
+    color: var(--bg);
+
+    padding: 10px 16px;
+
+    border-radius: 8px;
+
+    opacity: 0;
+
+    transition: 0.25s;
+
+    pointer-events: none;
+
+    z-index: 50;
+}
+
+#toast.show {
+    opacity: 1;
+}
+
+
+/* =========================================================
+   22. RESPONSIVE DESIGN
+   ========================================================= */
+
+@media (max-width: 760px) {
+    .grid2 {
+        grid-template-columns: 1fr;
+    }
+}
+```

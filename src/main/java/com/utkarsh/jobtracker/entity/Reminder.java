@@ -1,31 +1,36 @@
 package com.utkarsh.jobtracker.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "reminders")
-@Data
+@Getter @Setter
 public class Reminder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "application_id", nullable = false)
-    private JobApplication application;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    private Instant remindAt;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "job_application_id", nullable = false)
+    private JobApplication jobApplication;
 
-    private boolean sent = false;
+    @Column(nullable = false)
+    private LocalDate remindAt;
+
+    private String message;
+
+    /** Scheduler isse process kar chuka (Pro ko email gaya). */
+    private boolean notified = false;
+
+    /** User ne dashboard par dismiss kar diya. */
+    private boolean done = false;
 }

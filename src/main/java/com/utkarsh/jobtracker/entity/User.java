@@ -1,34 +1,35 @@
 package com.utkarsh.jobtracker.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import org.hibernate.usertype.UserType;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.management.relation.Role;
 import java.time.Instant;
-import java.util.UUID;
 
 @Entity
-@Data
-@Table (name = "user")
+@Table(name = "users")
+@Getter @Setter
 public class User {
- @Id
- @GeneratedValue (strategy = GenerationType.UUID)
+
+    public enum Role { USER, ADMIN }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
- @Column(unique = true ,nullable=false)
+    @Column(nullable = false, length = 100)
+    private String name;
+
+    @Column(nullable = false, unique = true)
     private String email;
 
- @com.fasterxml.jackson.annotation.JsonIgnore
- @Column(nullable = false)
+    @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
- @Enumerated(EnumType.STRING)
- private Role role=Role.USER;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role = Role.USER;
 
- private Instant creationAt = Instant.now();
-
- private enum Role{
-     USER, ADMIN
- }
+    @Column(nullable = false)
+    private Instant createdAt = Instant.now();
 }

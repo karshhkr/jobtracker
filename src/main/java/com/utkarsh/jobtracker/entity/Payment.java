@@ -1,43 +1,39 @@
 package com.utkarsh.jobtracker.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
 @Table(name = "payments")
-@Data
+@Getter @Setter
 public class Payment {
+
+    public enum Status { CREATED, PAID, FAILED }
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subscription_id", nullable = false)
-    private Subscription subscription;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    private BigDecimal amount;
+    @Column(nullable = false, unique = true)
+    private String razorpayOrderId;
 
     private String razorpayPaymentId;
 
+    /** Paise mein. */
+    @Column(nullable = false)
+    private long amount;
+
     @Enumerated(EnumType.STRING)
-    private PaymentStatus status;
+    @Column(nullable = false)
+    private Status status = Status.CREATED;
 
-    private Instant paidAt = Instant.now();
-
-    public enum PaymentStatus {
-        CREATED, SUCCESS, FAILED
-    }
+    @Column(nullable = false)
+    private Instant createdAt = Instant.now();
 }

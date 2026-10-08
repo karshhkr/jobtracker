@@ -1,92 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>JobTrackr - Dashboard</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-<div class="dashboard">
-    <div class="topbar">
-        <h1>JobTrackr</h1>
-        <button id="logoutBtn">Logout</button>
+<div th:replace="~{fragments :: navbar('dashboard')}"></div>
+<main class="container">
+    <div id="stats" class="stats"></div>
+
+    <div class="grid2">
+        <section class="card"><h3 style="margin-top:0">Follow-ups due</h3><div id="reminders"></div></section>
+        <section class="card"><h3 style="margin-top:0">Your plan</h3><div id="plan"></div></section>
     </div>
 
-    <h2>Add Application</h2>
-    <form id="addForm">
-        <input type="text" id="company" placeholder="Company" required>
-        <input type="text" id="roleTitle" placeholder="Role" required>
-        <label>Follow-up date (optional): <input type="date" id="followUpDate"></label>
-        <button type="submit">Add Application</button>
+    <div class="toolbar">
+        <input id="search" type="search" placeholder="Search company, role or location">
+        <select id="filter">
+            <option value="">All statuses</option>
+            <option>WISHLIST</option><option>APPLIED</option><option>INTERVIEW</option><option>OFFER</option><option>REJECTED</option>
+        </select>
+        <button class="btn" id="addBtn" type="button">+ Add application</button>
+    </div>
+
+    <section class="card table-wrap" style="padding:0">
+        <table>
+            <thead><tr><th>Company</th><th>Role</th><th>Status</th><th>Applied</th><th>Follow up</th><th></th></tr></thead>
+            <tbody id="tbody"></tbody>
+        </table>
+        <div id="empty" class="empty" style="display:none"></div>
+    </section>
+</main>
+
+<dialog id="jobDialog">
+    <h3 id="dlgTitle" style="margin-top:0">Add application</h3>
+    <div class="error" id="formErr"></div>
+    <form id="jobForm">
+        <input type="hidden" name="jobId">
+        <div class="row">
+            <div><label>Company *</label><input name="company" required maxlength="255"></div>
+            <div><label>Role *</label><input name="roleTitle" required maxlength="255"></div>
+        </div>
+        <div class="row">
+            <div><label>Location</label><input name="location" maxlength="255"></div>
+            <div><label>Status</label>
+                <select name="status">
+                    <option>WISHLIST</option><option selected>APPLIED</option><option>INTERVIEW</option><option>OFFER</option><option>REJECTED</option>
+                </select>
+            </div>
+        </div>
+        <label>Job link</label>
+        <input name="jobUrl" type="url" maxlength="1000" placeholder="https://">
+        <div class="row">
+            <div><label>Applied on</label><input name="appliedDate" type="date"></div>
+            <div><label>Follow up on</label><input name="followUpDate" type="date"></div>
+        </div>
+        <label>Notes</label>
+        <textarea name="notes" rows="3" maxlength="5000" placeholder="Recruiter name, referral, interview rounds..."></textarea>
+        <div class="actions">
+            <button class="btn ghost" type="button" id="cancelBtn">Cancel</button>
+            <button class="btn" type="submit">Save</button>
+        </div>
     </form>
-    <p id="addError" class="error"></p>
+</dialog>
 
-    <h2>Your Applications</h2>
-    <table id="appTable">
-        <thead>
-        <tr><th>Company</th><th>Role</th><th>Status</th><th>Applied</th><th>Follow-up</th></tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-</div>
-
-<script>
-    const token = localStorage.getItem('jwt');
-    if (!token) window.location.href = '/login';
-
-    async function loadApplications() {
-        const res = await fetch('/api/applications', {
-            headers: { 'Authorization': 'Bearer ' + token }
-        });
-
-        if (res.status === 401 || res.status === 403) {
-            localStorage.removeItem('jwt');
-            window.location.href = '/login';
-            return;
-        }
-
-        const apps = await res.json();
-        const tbody = document.querySelector('#appTable tbody');
-        tbody.innerHTML = '';
-        apps.forEach(app => {
-            const row = document.createElement('tr');
-            row.innerHTML = `<td>${app.company}</td><td>${app.roleTitle}</td><td>${app.status}</td><td>${app.appliedDate || ''}</td><td>${app.followUpDate || ''}</td>`;
-            tbody.appendChild(row);
-        });
-    }
-
-    document.getElementById('addForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const company = document.getElementById('company').value;
-        const roleTitle = document.getElementById('roleTitle').value;
-        const followUpDate = document.getElementById('followUpDate').value || null;
-
-        const res = await fetch('/api/applications', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
-            },
-            body: JSON.stringify({ company, roleTitle, followUpDate })
-        });
-
-        if (!res.ok) {
-            const err = await res.json();
-            document.getElementById('addError').textContent = err.error || 'Could not add application';
-            return;
-        }
-
-        document.getElementById('addForm').reset();
-        document.getElementById('addError').textContent = '';
-        loadApplications();
-    });
-
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-        localStorage.removeItem('jwt');
-        window.location.href = '/login';
-    });
-
-    loadApplications();
-</script>
+<script th:src="@{/js/app.js}"></script>
+<script th:src="@{/js/dashboard.js}"></script>
 </body>
 </html>

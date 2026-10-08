@@ -1,36 +1,20 @@
 package com.utkarsh.jobtracker.scheduler;
 
-import com.utkarsh.jobtracker.entity.Reminder;
-import com.utkarsh.jobtracker.repository.ReminderRepository;
+import com.utkarsh.jobtracker.service.ReminderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
-import java.util.List;
-
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ReminderScheduler {
 
-    private final ReminderRepository reminderRepo;
-    private final JavaMailSender mailSender;
+    private final ReminderService reminderService;
 
-    @Scheduled(cron = "0 0 * * * *")
-    public void sendDueReminders() {
-        List<Reminder> due = reminderRepo.findByRemindAtBeforeAndSentFalse(Instant.now());
-
-        for (Reminder r : due) {
-            SimpleMailMessage mail = new SimpleMailMessage();
-            mail.setTo(r.getApplication().getUser().getEmail());
-            mail.setSubject("Follow up: " + r.getApplication().getCompany());
-            mail.setText("Time to follow up on your application to " + r.getApplication().getCompany());
-            mailSender.send(mail);
-
-            r.setSent(true);
-            reminderRepo.save(r);
-        }
+    @Scheduled(cron = "${app.reminder-cron}", zone = "Asia/Kolkata")
+    public void run() {
+        log.info("Reminder run complete: {} processed", reminderService.processPending());
     }
 }

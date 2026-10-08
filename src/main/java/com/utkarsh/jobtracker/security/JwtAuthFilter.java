@@ -1,12 +1,12 @@
 package com.utkarsh.jobtracker.security;
 
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -17,25 +17,22 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
+
     private final JwtUtil jwtUtil;
+
     @Override
-    protected  void  doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws ServletException, IOException{
-
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
+            throws ServletException, IOException {
         String header = req.getHeader("Authorization");
-    if(header != null&& header.startsWith("Bearer ")){
-        String token =header.substring(7);
-        String userId = jwtUtil.extractUserId(token);
-        if(userId!= null && SecurityContextHolder.getContext().getAuthentication() == null){
-if(jwtUtil.isTokenValid(token)){
-    var authToken =new UsernamePasswordAuthenticationToken(userId,null, List.of());
-    SecurityContextHolder.getContext().setAuthentication(authToken);
-
-}
+        if (header != null && header.startsWith("Bearer ")
+                && SecurityContextHolder.getContext().getAuthentication() == null) {
+            String userId = jwtUtil.extractUserId(header.substring(7));
+            if (userId != null) {
+                SecurityContextHolder.getContext().setAuthentication(
+                        new UsernamePasswordAuthenticationToken(userId, null,
+                                List.of(new SimpleGrantedAuthority("ROLE_USER"))));
+            }
+        }
+        chain.doFilter(req, res);
     }
 }
-
-
-chain.doFilter(req, res);
-}
-        }
-
