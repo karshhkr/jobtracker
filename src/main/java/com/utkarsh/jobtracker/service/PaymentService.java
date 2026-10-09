@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -37,11 +38,34 @@ public class PaymentService {
     @Value("${razorpay.webhook-secret}")
     private String webhookSecret;
 
+    /** True = free beta: Pro bina paise ke milta hai. Live Razorpay keys ke saath kabhi nahi chalega. */
+    @Value("${app.mock-payments:false}")
+    private boolean mockPayments;
+
+    @jakarta.annotation.PostConstruct
+    void guardMock() {
+        if (mockPayments && keyId.startsWith("rzp_live_")) {
+            throw new IllegalStateException("Mock payments cannot run with live Razorpay keys");
+        }
+    }
+
     @Transactional
     public Map<String, Object> createOrder(String userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         long amount = subscriptionService.getPricePaise();
+
+        if (mockPayments) {
+            // Beta mein stacking nahi: Pro hai to dobara claim nahi hoga
+            if (subscriptionService.isPro(userId)) {
+                throw new IllegalArgumentException("You already have Pro during the beta.");
+            }
+            String orderId = "mock_order_" + UUID.randomUUID();
+            savePayment(user, orderId, amount);
+            return Map.of("orderId", orderId, "amount", amount, "currency", "INR",
+                    "keyId", "mock", "name", user.getName(), "email", user.getEmail(), "mock", true);
+        }
+
         try {
             JSONObject options = new JSONObject();
             options.put("amount", amount);
@@ -49,13 +73,7 @@ public class PaymentService {
             options.put("receipt", "jt_" + System.currentTimeMillis());
             Order order = razorpay.orders.create(options);
             String orderId = order.get("id");
-
-            Payment p = new Payment();
-            p.setUser(user);
-            p.setRazorpayOrderId(orderId);
-            p.setAmount(amount);
-            paymentRepository.save(p);
-
+            savePayment(user, orderId, amount);
             return Map.of("orderId", orderId, "amount", amount, "currency", "INR",
                     "keyId", keyId, "name", user.getName(), "email", user.getEmail());
         } catch (RazorpayException e) {
@@ -70,6 +88,13 @@ public class PaymentService {
                 .filter(x -> x.getUser().getId().equals(userId))
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
         if (p.getStatus() == Payment.Status.PAID) {
+            return;
+        }
+        if (mockPayments && orderId.startsWith("mock_order_")) {
+            if (subscriptionService.isPro(userId)) {
+                throw new IllegalArgumentException("You already have Pro during the beta.");
+            }
+            confirm(p, "mock_pay_" + System.currentTimeMillis());
             return;
         }
         try {
@@ -107,6 +132,14 @@ public class PaymentService {
                 confirm(p, entity.getString("id"));
             }
         }, () -> log.warn("Webhook for unknown order {}", entity.optString("order_id")));
+    }
+
+    private void savePayment(User user, String orderId, long amount) {
+        Payment p = new Payment();
+        p.setUser(user);
+        p.setRazorpayOrderId(orderId);
+        p.setAmount(amount);
+        paymentRepository.save(p);
     }
 
     private void confirm(Payment p, String paymentId) {

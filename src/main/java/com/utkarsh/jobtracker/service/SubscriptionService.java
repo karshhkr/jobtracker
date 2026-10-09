@@ -27,19 +27,22 @@ public class SubscriptionService {
     private final int freeLimit;
     private final long pricePaise;
     private final int proDays;
+    private final boolean betaFree;
 
     public SubscriptionService(SubscriptionRepository subscriptionRepository,
                                UserRepository userRepository,
                                JobApplicationRepository jobRepository,
                                @Value("${app.free-limit}") int freeLimit,
                                @Value("${app.pro-price-paise}") long pricePaise,
-                               @Value("${app.pro-days}") int proDays) {
+                               @Value("${app.pro-days}") int proDays,
+                               @Value("${app.mock-payments:false}") boolean betaFree) {
         this.subscriptionRepository = subscriptionRepository;
         this.userRepository = userRepository;
         this.jobRepository = jobRepository;
         this.freeLimit = freeLimit;
         this.pricePaise = pricePaise;
         this.proDays = proDays;
+        this.betaFree = betaFree;
     }
 
     @Transactional(readOnly = true)
@@ -64,7 +67,7 @@ public class SubscriptionService {
                 pro ? Plan.PRO.name() : Plan.FREE.name(), pro,
                 pro ? sub.getExpiresAt().atZone(IST).toLocalDate() : null,
                 jobRepository.countByUserId(userId),
-                pro ? -1 : freeLimit, pro, pricePaise);
+                pro ? -1 : freeLimit, pro, pricePaise, betaFree);
     }
 
     /** Pro deta hai ya extend karta hai. Pehle se Pro ho to purani expiry ke baad se jodta hai. */

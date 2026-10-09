@@ -42,7 +42,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    /** Login manually hota hai (AuthService), ye bean sirf Spring ka fake generated user band karta hai. */
+    /** Login manually hota hai (AuthService); ye bean sirf Spring ka fake generated user band karta hai. */
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> { throw new UsernameNotFoundException("Not used"); };

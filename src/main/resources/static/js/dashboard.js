@@ -28,7 +28,7 @@ function renderPlan(sub) {
        <span class="muted">${sub.used} applications tracked. Unlimited, with email reminders.</span>`
     : `<b>Free plan</b><div class="bar"><i style="width:${pct}%"></i></div>
        <span class="muted">${sub.used} of ${sub.limit} applications used.</span>
-       <div style="margin-top:10px"><a class="btn sm" href="/pricing">Upgrade to Pro</a></div>`;
+       <div style="margin-top:10px"><a class="btn sm" href="/pricing">${sub.betaFree ? 'Get Pro free (beta)' : 'Upgrade to Pro'}</a></div>`;
 }
 
 function renderReminders(list) {
