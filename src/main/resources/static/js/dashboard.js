@@ -127,4 +127,13 @@ $('reminders').addEventListener('click', async e => {
   catch (err) { toast(err.message); }
 });
 
+async function loadCompanies() {
+  try {
+    const list = await api('/api/companies');
+    $('companyList').innerHTML = list.map(c =>
+      `<option value="${esc(c.name)}">${esc(c.category)}</option>`).join('');
+  } catch (e) { /* suggestions optional hain, ignore */ }
+}
+loadCompanies();
+
 load();

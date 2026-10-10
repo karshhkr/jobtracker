@@ -40,7 +40,10 @@
     <form id="jobForm">
         <input type="hidden" name="jobId">
         <div class="row">
-            <div><label>Company *</label><input name="company" required maxlength="255"></div>
+            <div><label>Company *</label>
+                <input name="company" list="companyList" required maxlength="255" autocomplete="off">
+                <datalist id="companyList"></datalist>
+            </div>
             <div><label>Role *</label><input name="roleTitle" required maxlength="255"></div>
         </div>
         <div class="row">
