@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>JobTrackr - Dashboard</title>
+    <script th:src="@{/js/theme.js}"></script>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
@@ -22,16 +23,22 @@
             <option value="">All statuses</option>
             <option>WISHLIST</option><option>APPLIED</option><option>INTERVIEW</option><option>OFFER</option><option>REJECTED</option>
         </select>
+        <div class="seg">
+            <button id="viewTable" type="button" class="active">Table</button>
+            <button id="viewBoard" type="button">Board</button>
+        </div>
         <button class="btn" id="addBtn" type="button">+ Add application</button>
     </div>
 
-    <section class="card table-wrap" style="padding:0">
+    <section id="tableWrap" class="card table-wrap" style="padding:0">
         <table>
             <thead><tr><th>Company</th><th>Role</th><th>Status</th><th>Applied</th><th>Follow up</th><th></th></tr></thead>
             <tbody id="tbody"></tbody>
         </table>
         <div id="empty" class="empty" style="display:none"></div>
     </section>
+
+    <div id="board" class="board hidden"></div>
 </main>
 
 <dialog id="jobDialog">

@@ -38,9 +38,30 @@ function toast(msg) {
   setTimeout(() => t.classList.remove('show'), 2800);
 }
 
+function currentTheme() {
+  return document.documentElement.getAttribute('data-theme') ||
+    (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+}
+
+function applyThemeIcon() {
+  const b = document.getElementById('themeBtn');
+  if (b) b.textContent = currentTheme() === 'dark' ? '\u2600' : '\u263E';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const u = document.getElementById('navUser');
   if (u) u.textContent = Auth.name;
   const l = document.getElementById('logoutBtn');
   if (l) l.addEventListener('click', logout);
+
+  const tb = document.getElementById('themeBtn');
+  if (tb) {
+    applyThemeIcon();
+    tb.addEventListener('click', () => {
+      const next = currentTheme() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('jt_theme', next);
+      applyThemeIcon();
+    });
+  }
 });
