@@ -1,4 +1,4 @@
-# JobTrackr
+# JobTracker
 
 A job application tracker built with **Spring Boot, Spring Security (JWT), JPA/Hibernate, Flyway and MySQL**. Users register, log in and track every application from wishlist to offer, with follow-up reminders, a table and board view, and a free/pro plan. Deployed with **Docker on Render**, using a managed **MySQL database on Aiven**.
 
