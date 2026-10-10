@@ -14,14 +14,14 @@ A job application tracker built with **Spring Boot, Spring Security (JWT), JPA/H
 | Dashboard (dark) | Board view |
 |---|---|
 |  [SignUp] (<img width="1907" height="1027" alt="image" src="https://github.com/user-attachments/assets/6c130205-dbe8-4b3b-9e75-075debd7880f" />) 
-|  [Login](<img width="1917" height="1027" alt="image" src="https://github.com/user-attachments/assets/dbc436c5-afab-462d-9622-38b10591d0ef" />)
-| ![Dashboard](<img width="1911" height="1022" alt="image" src="https://github.com/user-attachments/assets/74be8c57-3464-463e-960c-07d88f2cb113" />) 
-| ![Board view](<img width="1917" height="1022" alt="image" src="https://github.com/user-attachments/assets/c0f251a8-46e5-4a52-9bbd-c9067e1f11ca" />) 
+|  [Login] (<img width="1917" height="1027" alt="image" src="https://github.com/user-attachments/assets/dbc436c5-afab-462d-9622-38b10591d0ef" />)
+| ![Dashboard] (<img width="1911" height="1022" alt="image" src="https://github.com/user-attachments/assets/74be8c57-3464-463e-960c-07d88f2cb113" />) 
+| ![Board view] (<img width="1917" height="1022" alt="image" src="https://github.com/user-attachments/assets/c0f251a8-46e5-4a52-9bbd-c9067e1f11ca" />) 
 
 
 | Add application | Pricing / plans |
 |---|---|
-| ![Add application](<img width="1917" height="1022" alt="image" src="https://github.com/user-attachments/assets/f73def98-b0fd-41ee-9b41-cb4c89392a70" />) | ![Pricing](<img width="1917" height="1018" alt="image" src="https://github.com/user-attachments/assets/9252af68-8d6f-422f-b647-00ded30bba17" />) |
+| ![Add application] (<img width="1917" height="1022" alt="image" src="https://github.com/user-attachments/assets/f73def98-b0fd-41ee-9b41-cb4c89392a70" />) | ![Pricing] (<img width="1917" height="1018" alt="image" src="https://github.com/user-attachments/assets/9252af68-8d6f-422f-b647-00ded30bba17" />) |
 
 ---
 
